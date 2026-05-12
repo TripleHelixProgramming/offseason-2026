@@ -29,13 +29,12 @@ import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOBoron;
+import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSimWPI;
-import frc.robot.subsystems.drive.ModuleIOTalonFX;
-import frc.robot.util.CanandgyroThread;
+import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.drive.SparkOdometryThread;
 import frc.robot.util.KernelLogMonitor;
-import frc.robot.util.SparkOdometryThread;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -106,11 +105,11 @@ public class Robot extends LoggedRobot {
         // Instantiate hardware IO implementations
         drive =
             new Drive(
-                new GyroIOBoron(),
-                new ModuleIOTalonFX(DriveConstants.FrontLeft),
-                new ModuleIOTalonFX(DriveConstants.FrontRight),
-                new ModuleIOTalonFX(DriveConstants.BackLeft),
-                new ModuleIOTalonFX(DriveConstants.BackRight));
+                new GyroIOPigeon2(),
+                new ModuleIOSpark(DriveConstants.FrontLeft),
+                new ModuleIOSpark(DriveConstants.FrontRight),
+                new ModuleIOSpark(DriveConstants.BackLeft),
+                new ModuleIOSpark(DriveConstants.BackRight));
 
         // Start kernel log monitoring (singleton, starts automatically on first call)
         KernelLogMonitor.getInstance();
@@ -152,7 +151,6 @@ public class Robot extends LoggedRobot {
 
     // Start background threads (for non-blocking CAN/network reads)
     SparkOdometryThread.getInstance().start();
-    CanandgyroThread.getInstance().start();
 
     // Start AdvantageKit logger
     Logger.start();
