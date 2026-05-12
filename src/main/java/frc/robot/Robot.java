@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.game.Field;
-import frc.game.GameState;
 import frc.lib.CommandZorroController;
 import frc.lib.ControllerSelector;
 import frc.lib.ControllerSelector.ControllerType;
@@ -37,7 +36,6 @@ import frc.robot.subsystems.drive.ModuleIOTalonFX;
 import frc.robot.util.CanandgyroThread;
 import frc.robot.util.KernelLogMonitor;
 import frc.robot.util.SparkOdometryThread;
-import frc.robot.util.VisionThread;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -154,7 +152,6 @@ public class Robot extends LoggedRobot {
 
     // Start background threads (for non-blocking CAN/network reads)
     SparkOdometryThread.getInstance().start();
-    VisionThread.getInstance().start();
     CanandgyroThread.getInstance().start();
 
     // Start AdvantageKit logger
@@ -199,7 +196,6 @@ public class Robot extends LoggedRobot {
     logScheduler();
 
     Logger.recordOutput("USB/FreeSpaceMB", getUSBStorageFreeSpace() / 1024 / 1024);
-    GameState.logValues();
     long t2 = FeatureFlags.PROFILING_ENABLED ? System.nanoTime() : 0;
 
     // Publish kernel log events to NetworkTables (only runs on real robot)
@@ -287,8 +283,7 @@ public class Robot extends LoggedRobot {
             Math.max(
                 0.0,
                 BatterySim.calculateDefaultBatteryLoadedVoltage(
-                    drive.getSimCurrentDrawAmps(),
-                    ELECTRONICS_OVERHEAD_AMPS))));
+                    drive.getSimCurrentDrawAmps(), ELECTRONICS_OVERHEAD_AMPS))));
   }
 
   private void configureControlPanelBindings() {
