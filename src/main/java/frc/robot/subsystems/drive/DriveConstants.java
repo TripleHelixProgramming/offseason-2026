@@ -36,7 +36,7 @@ import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.MomentOfInertia;
-import frc.robot.Constants.MotorConstants.KrakenX60Constants;
+import frc.robot.Constants.MotorConstants.NEOConstants;
 
 public class DriveConstants {
 
@@ -66,12 +66,12 @@ public class DriveConstants {
   public static final double wheelRadiusMeters = wheelRadius.in(Meters);
   public static final double driveMotorReduction =
       (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0); // SDS MK4 L2
-  public static final DCMotor driveGearbox = DCMotor.getKrakenX60(1);
+  public static final DCMotor driveGearbox = DCMotor.getNEO(1);
   public static final LinearVelocity drivetrainSpeedLimit =
       MetersPerSecond.of(
           0.9
               * (wheelRadius.in(Meters) * 2.0 * Math.PI)
-              * KrakenX60Constants.kFreeSpeed.in(RotationsPerSecond)
+              * NEOConstants.kFreeSpeed.in(RotationsPerSecond)
               / driveMotorReduction);
 
   // Drive encoder configuration
@@ -105,7 +105,7 @@ public class DriveConstants {
   public static final boolean turnInverted = false;
   public static final double turnMotorReduction = (32.0 / 15.0) * (60.0 / 10.0); // SDS MK4
   // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
-  public static final DCMotor turnGearbox = DCMotor.getKrakenX60(1);
+  public static final DCMotor turnGearbox = DCMotor.getNeo550(1);
 
   // Turn encoder configuration
   public static final double turnEncoderPositionFactor = 2 * Math.PI; // Rotations -> Radians
@@ -127,7 +127,7 @@ public class DriveConstants {
               drivetrainSpeedLimit.in(MetersPerSecond),
               wheelCOF,
               driveGearbox.withReduction(driveMotorReduction),
-              KrakenX60Constants.kDefaultSupplyCurrentLimit,
+              NEOConstants.kDefaultSupplyCurrentLimit,
               1),
           moduleTranslations);
 
@@ -147,9 +147,6 @@ public class DriveConstants {
   // TorqueCurrent peak at which the wheels start to slip; used for slip detection in
   // TorqueCurrentFOC control mode. This needs to be tuned to your individual robot.
   static final int kSlipCurrent = 120;
-
-  // Hardware stator current limit for drive motors
-  static final int kDriveStatorCurrentLimit = KrakenX60Constants.kDefaultStatorCurrentLimit;
 
   // Stator current limit for azimuth (steer) motors; lower than drive to reduce brownout risk
   // since steering requires minimal torque compared to driving.

@@ -62,18 +62,6 @@ public final class Constants {
       public static final AngularVelocity kFreeSpeed = RPM.of(11000);
       public static final int kDefaultSupplyCurrentLimit = 10;
     }
-
-    public static final class NEOVortexConstants {
-      public static final AngularVelocity kFreeSpeed = RPM.of(6784);
-      public static final int kDefaultSupplyCurrentLimit = 60;
-      public static final int kDefaultStatorCurrentLimit = 100;
-    }
-
-    public static final class KrakenX60Constants {
-      public static final AngularVelocity kFreeSpeed = RPM.of(6000);
-      public static final int kDefaultSupplyCurrentLimit = 60;
-      public static final int kDefaultStatorCurrentLimit = 100;
-    }
   }
 
   public static final class DIOPorts {
