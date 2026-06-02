@@ -15,19 +15,11 @@ package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.*;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.swerve.SwerveDrivetrain;
-import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
-import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -131,19 +123,6 @@ public class DriveConstants {
               1),
           moduleTranslations);
 
-  public static double driveKp = 10;
-  public static double driveKd = 0;
-  public static double driveKs = 0;
-  public static double driveKv = 0.124;
-
-  // Turn PID configuration
-  public static final double turnKp = 2.0;
-  public static final double turnKd = 0.0;
-  public static final double turnSimP = 8.0;
-  public static final double turnSimD = 0.0;
-  public static final double turnPIDMinInput = 0; // Radians
-  public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
-
   // TorqueCurrent peak at which the wheels start to slip; used for slip detection in
   // TorqueCurrentFOC control mode. This needs to be tuned to your individual robot.
   static final int kSlipCurrent = 120;
@@ -153,86 +132,4 @@ public class DriveConstants {
   static final int kSteerStatorCurrentLimit = 60;
 
   static final double ODOMETRY_FREQUENCY = 100.0; // Hz
-
-  /**
-   * Creates a CommandSwerveDrivetrain instance. This should only be called once in your robot
-   * program,.
-   */
-  //   public static CommandSwerveDrivetrain createDrivetrain() {
-  //     return new CommandSwerveDrivetrain(
-  //         DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
-  //   }
-
-  /** Swerve Drive class utilizing CTR Electronics' Phoenix 6 API with the selected device types. */
-  public static class TunerSwerveDrivetrain extends SwerveDrivetrain<TalonFX, TalonFX, CANcoder> {
-    /**
-     * Constructs a CTRE SwerveDrivetrain using the specified constants.
-     *
-     * <p>This constructs the underlying hardware devices, so users should not construct the devices
-     * themselves. If they need the devices, they can access them through getters in the classes.
-     *
-     * @param drivetrainConstants Drivetrain-wide constants for the swerve drive
-     * @param modules Constants for each specific module
-     */
-    public TunerSwerveDrivetrain(
-        SwerveDrivetrainConstants drivetrainConstants, SwerveModuleConstants<?, ?, ?>... modules) {
-      super(TalonFX::new, TalonFX::new, CANcoder::new, drivetrainConstants, modules);
-    }
-
-    /**
-     * Constructs a CTRE SwerveDrivetrain using the specified constants.
-     *
-     * <p>This constructs the underlying hardware devices, so users should not construct the devices
-     * themselves. If they need the devices, they can access them through getters in the classes.
-     *
-     * @param drivetrainConstants Drivetrain-wide constants for the swerve drive
-     * @param odometryUpdateFrequency The frequency to run the odometry loop. If unspecified or set
-     *     to 0 Hz, this is 250 Hz on CAN FD, and 100 Hz on CAN 2.0.
-     * @param modules Constants for each specific module
-     */
-    public TunerSwerveDrivetrain(
-        SwerveDrivetrainConstants drivetrainConstants,
-        double odometryUpdateFrequency,
-        SwerveModuleConstants<?, ?, ?>... modules) {
-      super(
-          TalonFX::new,
-          TalonFX::new,
-          CANcoder::new,
-          drivetrainConstants,
-          odometryUpdateFrequency,
-          modules);
-    }
-
-    /**
-     * Constructs a CTRE SwerveDrivetrain using the specified constants.
-     *
-     * <p>This constructs the underlying hardware devices, so users should not construct the devices
-     * themselves. If they need the devices, they can access them through getters in the classes.
-     *
-     * @param drivetrainConstants Drivetrain-wide constants for the swerve drive
-     * @param odometryUpdateFrequency The frequency to run the odometry loop. If unspecified or set
-     *     to 0 Hz, this is 250 Hz on CAN FD, and 100 Hz on CAN 2.0.
-     * @param odometryStandardDeviation The standard deviation for odometry calculation in the form
-     *     [x, y, theta]ᵀ, with units in meters and radians
-     * @param visionStandardDeviation The standard deviation for vision calculation in the form [x,
-     *     y, theta]ᵀ, with units in meters and radians
-     * @param modules Constants for each specific module
-     */
-    public TunerSwerveDrivetrain(
-        SwerveDrivetrainConstants drivetrainConstants,
-        double odometryUpdateFrequency,
-        Matrix<N3, N1> odometryStandardDeviation,
-        Matrix<N3, N1> visionStandardDeviation,
-        SwerveModuleConstants<?, ?, ?>... modules) {
-      super(
-          TalonFX::new,
-          TalonFX::new,
-          CANcoder::new,
-          drivetrainConstants,
-          odometryUpdateFrequency,
-          odometryStandardDeviation,
-          visionStandardDeviation,
-          modules);
-    }
-  }
 }

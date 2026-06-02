@@ -40,6 +40,18 @@ import java.util.function.DoubleSupplier;
  * and duty cycle absolute encoder.
  */
 public class ModuleIOSpark implements ModuleIO {
+
+  private static double driveKp = 10;
+  private static double driveKd = 0;
+  private static double driveKs = 0;
+  private static double driveKv = 0.124;
+
+  private static double turnKp = 2.0;
+  private static double turnKd = 0.0;
+
+  public static final double turnPIDMinInput = 0; // Radians
+  public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
+
   private final Rotation2d zeroRotation;
 
   // Hardware objects
