@@ -98,29 +98,6 @@ public final class Constants {
       // Drivetrain
       public static final int gyro = 0;
 
-      // Launcher
-      public static final int turret = 12;
-      public static final int hood = 13;
-      public static final int flywheelLeader = 14;
-      public static final int flywheelFollower = 15;
-
-      // Feeder
-      public static final int spindexer = 16;
-      public static final int kicker = 17;
-
-      // Intake
-      public static final int intakeRollerLower = 22;
-      public static final int intakeRollerUpper = 23;
-      public static final int intakeArmRight = 27;
-      public static final int intakeArmLeft = 26;
-    }
-
-    public static final class CANHD {
-      // CAN bus that the devices are located on;
-      // All swerve devices must share the same CAN bus
-      public static final CANBus bus = new CANBus("canivore");
-
-      // Drivetrain
       public static final int backLeftDrive = 10;
       public static final int backRightDrive = 18;
       public static final int frontRightDrive = 20;

@@ -27,11 +27,9 @@ import frc.lib.LoggedPowerDistribution;
 import frc.robot.Constants.FeatureFlags;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOSimWPI;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.drive.SparkOdometryThread;
 import frc.robot.util.KernelLogMonitor;
@@ -106,10 +104,10 @@ public class Robot extends LoggedRobot {
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOSpark(DriveConstants.FrontLeft),
-                new ModuleIOSpark(DriveConstants.FrontRight),
-                new ModuleIOSpark(DriveConstants.BackLeft),
-                new ModuleIOSpark(DriveConstants.BackRight));
+                new ModuleIOSpark(0),
+                new ModuleIOSpark(1),
+                new ModuleIOSpark(2),
+                new ModuleIOSpark(3));
 
         // Start kernel log monitoring (singleton, starts automatically on first call)
         KernelLogMonitor.getInstance();
@@ -124,10 +122,10 @@ public class Robot extends LoggedRobot {
         drive =
             new Drive(
                 new GyroIO() {},
-                new ModuleIOSimWPI(DriveConstants.FrontLeft),
-                new ModuleIOSimWPI(DriveConstants.FrontRight),
-                new ModuleIOSimWPI(DriveConstants.BackLeft),
-                new ModuleIOSimWPI(DriveConstants.BackRight));
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {},
+                new ModuleIO() {});
         break;
 
       case REPLAY: // Replaying a log
@@ -188,7 +186,6 @@ public class Robot extends LoggedRobot {
     long t1 = FeatureFlags.PROFILING_ENABLED ? System.nanoTime() : 0;
 
     logCANBus("CAN2", Constants.CANBusPorts.CAN2.bus);
-    logCANBus("CANHD", Constants.CANBusPorts.CANHD.bus);
     powerDistribution.log();
     logHIDs();
     logScheduler();

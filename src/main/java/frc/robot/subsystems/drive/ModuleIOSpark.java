@@ -29,6 +29,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.Constants.CANBusPorts.CAN2;
+import frc.robot.Constants.MotorConstants.NEO550Constants;
+import frc.robot.Constants.MotorConstants.NEOConstants;
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
@@ -72,20 +75,20 @@ public class ModuleIOSpark implements ModuleIO {
     driveSpark =
         new SparkFlex(
             switch (module) {
-              case 0 -> frontLeftDriveCanId;
-              case 1 -> frontRightDriveCanId;
-              case 2 -> backLeftDriveCanId;
-              case 3 -> backRightDriveCanId;
+              case 0 -> CAN2.frontLeftDrive;
+              case 1 -> CAN2.frontRightDrive;
+              case 2 -> CAN2.backLeftDrive;
+              case 3 -> CAN2.backRightDrive;
               default -> 0;
             },
             MotorType.kBrushless);
     turnSpark =
         new SparkMax(
             switch (module) {
-              case 0 -> frontLeftTurnCanId;
-              case 1 -> frontRightTurnCanId;
-              case 2 -> backLeftTurnCanId;
-              case 3 -> backRightTurnCanId;
+              case 0 -> CAN2.frontLeftTurn;
+              case 1 -> CAN2.frontRightTurn;
+              case 2 -> CAN2.backLeftTurn;
+              case 3 -> CAN2.backRightTurn;
               default -> 0;
             },
             MotorType.kBrushless);
@@ -98,7 +101,7 @@ public class ModuleIOSpark implements ModuleIO {
     var driveConfig = new SparkFlexConfig();
     driveConfig
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(driveMotorCurrentLimit)
+        .smartCurrentLimit(NEOConstants.kDefaultSupplyCurrentLimit)
         .voltageCompensation(12.0);
     driveConfig
         .encoder
@@ -113,7 +116,7 @@ public class ModuleIOSpark implements ModuleIO {
     driveConfig
         .signals
         .primaryEncoderPositionAlwaysOn(true)
-        .primaryEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency))
+        .primaryEncoderPositionPeriodMs((int) (1000.0 / ODOMETRY_FREQUENCY))
         .primaryEncoderVelocityAlwaysOn(true)
         .primaryEncoderVelocityPeriodMs(20)
         .appliedOutputPeriodMs(20)
@@ -132,7 +135,7 @@ public class ModuleIOSpark implements ModuleIO {
     turnConfig
         .inverted(turnInverted)
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(turnMotorCurrentLimit)
+        .smartCurrentLimit(NEO550Constants.kDefaultSupplyCurrentLimit)
         .voltageCompensation(12.0);
     turnConfig
         .absoluteEncoder
@@ -149,7 +152,7 @@ public class ModuleIOSpark implements ModuleIO {
     turnConfig
         .signals
         .absoluteEncoderPositionAlwaysOn(true)
-        .absoluteEncoderPositionPeriodMs((int) (1000.0 / odometryFrequency))
+        .absoluteEncoderPositionPeriodMs((int) (1000.0 / ODOMETRY_FREQUENCY))
         .absoluteEncoderVelocityAlwaysOn(true)
         .absoluteEncoderVelocityPeriodMs(20)
         .appliedOutputPeriodMs(20)
