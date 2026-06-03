@@ -65,8 +65,7 @@ public class DriveConstants {
   public static final double wheelRadiusMeters = wheelRadius.in(Meters);
 
   // TODO: Update drive motor reduction
-  public static final double driveMotorReduction =
-      (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0); // SDS MK4 L2
+  public static final double driveMotorReduction = (22.0 / 12.0) * (45.0 / 15.0);
   public static final DCMotor driveGearbox = DCMotor.getNEO(1);
   public static final LinearVelocity drivetrainSpeedLimit =
       MetersPerSecond.of(
@@ -103,7 +102,7 @@ public class DriveConstants {
   // Turn motor configuration
   public static final boolean turnInverted = false;
   // TODO: Update turn motor reduction
-  public static final double turnMotorReduction = (32.0 / 15.0) * (60.0 / 10.0); // SDS MK4
+  public static final double turnMotorReduction = 9424.0 / 203.0;
   public static final DCMotor turnGearbox = DCMotor.getNeo550(1);
 
   // Turn encoder configuration
