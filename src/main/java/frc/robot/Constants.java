@@ -69,8 +69,6 @@ public final class Constants {
     public static final int[] autonomousModeSelector = {0, 1, 2};
 
     public static final int allianceColorSelector = 3;
-
-    public static final int turretAbsEncoder = 4;
   }
 
   public static final class OIPorts {
@@ -83,7 +81,6 @@ public final class Constants {
     public static final class CAN2 {
       public static final CANBus bus = CANBus.roboRIO();
 
-      // Drivetrain
       public static final int gyro = 0;
 
       public static final int backLeftDrive = 10;
@@ -95,21 +92,6 @@ public final class Constants {
       public static final int backRightTurn = 19;
       public static final int frontRightTurn = 21;
       public static final int frontLeftTurn = 29;
-
-      public static final int backRightTurnAbsEncoder = 31;
-      public static final int frontRightTurnAbsEncoder = 33;
-      public static final int frontLeftTurnAbsEncoder = 43;
-      public static final int backLeftTurnAbsEncoder = 45;
     }
-  }
-
-  public static final class PneumaticChannels {
-    // hopper
-    public static final int hopperForward = 14;
-    public static final int hopperReverse = 15;
-
-    // intake arm
-    public static final int intakeArmForward = 0;
-    public static final int intakeArmReverse = 1;
   }
 }
