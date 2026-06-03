@@ -22,7 +22,6 @@ import frc.lib.ControllerSelector;
 import frc.lib.ControllerSelector.ControllerType;
 import frc.lib.ControllerSelector.DriverConfig;
 import frc.lib.ControllerSelector.DriverController;
-import frc.lib.ControllerSelector.OperatorConfig;
 import frc.lib.LoggedPowerDistribution;
 import frc.robot.Constants.CANBusPorts.CAN2;
 import frc.robot.Constants.FeatureFlags;
@@ -289,9 +288,6 @@ public class Robot extends LoggedRobot {
         // ZORRO is always preferred as driver in REAL and SIM mode
         new DriverConfig(
             ControllerType.ZORRO, this::bindZorroDriver, Constants.Mode.REAL, Constants.Mode.SIM),
-        // XBOX is always preferred as operator in REAL and SIM mode
-        new OperatorConfig(
-            ControllerType.XBOX, this::bindXboxOperator, Constants.Mode.REAL, Constants.Mode.SIM),
         // XBOX is permitted as driver in REAL and SIM mode
         new DriverConfig(
             ControllerType.XBOX, this::bindXboxDriver, Constants.Mode.REAL, Constants.Mode.SIM),
@@ -427,10 +423,6 @@ public class Robot extends LoggedRobot {
             Commands.runOnce(() -> DriveCommands.resetDriverForward(drive)).ignoringDisable(true));
 
     return controller;
-  }
-
-  public void bindXboxOperator(int port, DriverController driver) {
-    var xboxOperator = new CommandXboxController(port);
   }
 
   /** Returns the number of free bytes on the USB log drive at /U, or Long.MAX_VALUE in sim. */

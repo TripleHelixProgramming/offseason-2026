@@ -70,7 +70,7 @@ public class DriveConstants {
   public static final LinearVelocity drivetrainSpeedLimit =
       MetersPerSecond.of(
           0.9
-              * (wheelRadius.in(Meters) * 2.0 * Math.PI)
+              * (wheelRadiusMeters * 2.0 * Math.PI)
               * NEOConstants.kFreeSpeed.in(RotationsPerSecond)
               / driveMotorReduction);
 
