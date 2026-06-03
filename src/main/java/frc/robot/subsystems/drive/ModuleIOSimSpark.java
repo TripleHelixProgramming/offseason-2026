@@ -30,11 +30,11 @@ public class ModuleIOSimSpark implements ModuleIO {
 
   // Conversion factors for the simulated turn primary encoder, scaled to output-shaft (azimuth)
   // radians — matching the units of the real absolute encoder.
-  private static final double turnSimPositionFactor = 2 * Math.PI / turnMotorReduction;
-  private static final double turnSimVelocityFactor = (2 * Math.PI) / 60.0 / turnMotorReduction;
+  private static final double TURN_SIM_POSITION_FACTOR = 2 * Math.PI / turnMotorReduction;
+  private static final double TURN_SIM_VELOCITY_FACTOR = (2 * Math.PI) / 60.0 / turnMotorReduction;
 
-  private static final double driveSimMOI = 0.025; // kg*m^2
-  private static final double turnSimMOI = 0.004; // kg*m^2
+  private static final double DRIVE_SIM_MOI = 0.025; // kg*m^2
+  private static final double TURN_SIM_MOI = 0.004; // kg*m^2
 
   private Rotation2d zeroRotation = Rotation2d.kZero;
 
@@ -78,8 +78,8 @@ public class ModuleIOSimSpark implements ModuleIO {
         .voltageCompensation(12.0);
     turnConfig
         .encoder
-        .positionConversionFactor(turnSimPositionFactor)
-        .velocityConversionFactor(turnSimVelocityFactor);
+        .positionConversionFactor(TURN_SIM_POSITION_FACTOR)
+        .velocityConversionFactor(TURN_SIM_VELOCITY_FACTOR);
     turnConfig
         .closedLoop
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -93,11 +93,11 @@ public class ModuleIOSimSpark implements ModuleIO {
 
     driveDCMotorSim =
         new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(driveGearbox, driveSimMOI, driveMotorReduction),
+            LinearSystemId.createDCMotorSystem(driveGearbox, DRIVE_SIM_MOI, driveMotorReduction),
             driveGearbox);
     turnDCMotorSim =
         new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(turnGearbox, turnSimMOI, turnMotorReduction),
+            LinearSystemId.createDCMotorSystem(turnGearbox, TURN_SIM_MOI, turnMotorReduction),
             turnGearbox);
   }
 

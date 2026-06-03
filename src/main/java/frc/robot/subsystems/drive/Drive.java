@@ -56,7 +56,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class Drive extends SubsystemBase {
 
-  static final Lock odometryLock = new ReentrantLock();
+  protected static final Lock ODOMETRY_LOCK = new ReentrantLock();
   private final GyroIO gyroIO;
   private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
@@ -155,7 +155,7 @@ public class Drive extends SubsystemBase {
   public void periodic() {
     long startNanos = FeatureFlags.PROFILING_ENABLED ? System.nanoTime() : 0;
 
-    odometryLock.lock(); // Prevents odometry updates while reading data
+    ODOMETRY_LOCK.lock(); // Prevents odometry updates while reading data
     long t1 = FeatureFlags.PROFILING_ENABLED ? System.nanoTime() : 0;
     gyroIO.updateInputs(gyroInputs);
     long t2 = FeatureFlags.PROFILING_ENABLED ? System.nanoTime() : 0;
@@ -165,7 +165,7 @@ public class Drive extends SubsystemBase {
       module.periodic();
     }
     long t4 = FeatureFlags.PROFILING_ENABLED ? System.nanoTime() : 0;
-    odometryLock.unlock();
+    ODOMETRY_LOCK.unlock();
 
     // Stop moving when disabled
     if (DriverStation.isDisabled()) {

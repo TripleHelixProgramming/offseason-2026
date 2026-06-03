@@ -21,21 +21,21 @@ import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 /** Physics sim implementation of module IO. */
 public class ModuleIOSimWPI implements ModuleIO {
 
-  private static double driveKp = 0.05;
-  private static double driveKd = 0;
-  private static double driveKs = 0;
-  private static double driveKv = 1.0 / Units.rotationsToRadians(1.0 / 0.91035);
+  private static final double DRIVE_KP = 0.05;
+  private static final double DRIVE_KD = 0;
+  private static final double DRIVE_KS = 0;
+  private static final double DRIVE_KV = 1.0 / Units.rotationsToRadians(1.0 / 0.91035);
 
-  private static double turnKp = 8.0;
-  private static double turnKd = 0.0;
+  private static final double TURN_KP = 8.0;
+  private static final double TURN_KD = 0.0;
 
   private final DCMotorSim driveSim;
   private final DCMotorSim turnSim;
 
   private boolean driveClosedLoop = false;
   private boolean turnClosedLoop = false;
-  private PIDController driveController = new PIDController(driveKp, 0, driveKd);
-  private PIDController turnController = new PIDController(turnKp, 0, turnKd);
+  private PIDController driveController = new PIDController(DRIVE_KP, 0, DRIVE_KD);
+  private PIDController turnController = new PIDController(TURN_KP, 0, TURN_KD);
   private double driveFFVolts = 0.0;
   private double driveAppliedVolts = 0.0;
   private double turnAppliedVolts = 0.0;
@@ -113,7 +113,7 @@ public class ModuleIOSimWPI implements ModuleIO {
   @Override
   public void setDriveVelocity(double velocityRadPerSec) {
     driveClosedLoop = true;
-    driveFFVolts = driveKs * Math.signum(velocityRadPerSec) + driveKv * velocityRadPerSec;
+    driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
     driveController.setSetpoint(velocityRadPerSec);
   }
 
