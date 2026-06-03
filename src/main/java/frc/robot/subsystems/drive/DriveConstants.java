@@ -34,6 +34,7 @@ public class DriveConstants {
   public static final String zeroRotationKey = "ZeroRotation";
 
   // Robot physical dimensions
+  // TODO: Update wheelbase and track width
   public static final Distance wheelBase = Inches.of(22.5);
   public static final Distance trackWidth = Inches.of(19.5);
   public static final Translation2d[] moduleTranslations =
@@ -47,8 +48,10 @@ public class DriveConstants {
       Meters.of(Translation2d.kZero.getDistance(moduleTranslations[0]));
 
   // Drive motor configuration
-  public static final Distance wheelRadius = Inches.of(2);
+  public static final Distance wheelRadius = Inches.of(1.5);
   public static final double wheelRadiusMeters = wheelRadius.in(Meters);
+
+  // TODO: Update drive motor reduction
   public static final double driveMotorReduction =
       (50.0 / 14.0) * (17.0 / 27.0) * (45.0 / 15.0); // SDS MK4 L2
   public static final DCMotor driveGearbox = DCMotor.getNEO(1);
@@ -61,11 +64,9 @@ public class DriveConstants {
 
   // Drive encoder configuration
   public static final double driveEncoderPositionFactor =
-      2 * Math.PI / driveMotorReduction; // Rotor Rotations ->
-  // Wheel Radians
+      2 * Math.PI / driveMotorReduction; // Rotor Rotations -> Wheel Radians
   public static final double driveEncoderVelocityFactor =
-      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM ->
-  // Wheel Rad/Sec
+      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
 
   // Chassis movement limits
   private static final LinearVelocity driverSpeedLimit = MetersPerSecond.of(5);
@@ -88,8 +89,8 @@ public class DriveConstants {
 
   // Turn motor configuration
   public static final boolean turnInverted = false;
+  // TODO: Update turn motor reduction
   public static final double turnMotorReduction = (32.0 / 15.0) * (60.0 / 10.0); // SDS MK4
-  // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
   public static final DCMotor turnGearbox = DCMotor.getNeo550(1);
 
   // Turn encoder configuration
@@ -99,7 +100,20 @@ public class DriveConstants {
   // Absolute turn encoder configuration
   public static final boolean turnEncoderInverted = false;
 
+  // Module controller gains
+  public static final double driveKp = 10.0;
+  public static final double driveKd = 0.0;
+  public static final double driveKs = 0.0;
+  public static final double driveKv = 0.124;
+
+  public static final double turnKp = 2.0;
+  public static final double turnKd = 0.0;
+
+  public static final double turnPIDMinInput = 0.0; // Radians
+  public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
+
   // PathPlanner configuration
+  // TODO: Update mass and MOI
   public static final Mass robotMass = Pounds.of(150);
   public static final MomentOfInertia robotMOI = KilogramSquareMeters.of(6);
   public static final double wheelCOF = 1.2;

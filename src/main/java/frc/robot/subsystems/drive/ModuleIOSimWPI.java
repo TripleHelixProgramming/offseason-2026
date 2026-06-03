@@ -16,25 +16,26 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 
 /** Physics sim implementation of module IO. */
 public class ModuleIOSimWPI implements ModuleIO {
 
-  private static double driveSimKp = 0.05;
-  private static double driveSimKd = 0;
-  private static double driveSimKs = 0;
-  private static double driveSimKv = 1.0 / Units.rotationsToRadians(1.0 / 0.91035);
+  private static double driveKp = 0.05;
+  private static double driveKd = 0;
+  private static double driveKs = 0;
+  private static double driveKv = 1.0 / Units.rotationsToRadians(1.0 / 0.91035);
 
-  private static double turnSimP = 8.0;
-  private static double turnSimD = 0.0;
+  private static double turnKp = 8.0;
+  private static double turnKd = 0.0;
 
   private final DCMotorSim driveSim;
   private final DCMotorSim turnSim;
 
   private boolean driveClosedLoop = false;
   private boolean turnClosedLoop = false;
-  private PIDController driveController = new PIDController(driveSimKp, 0, driveSimKd);
-  private PIDController turnController = new PIDController(turnSimP, 0, turnSimD);
+  private PIDController driveController = new PIDController(driveKp, 0, driveKd);
+  private PIDController turnController = new PIDController(turnKp, 0, turnKd);
   private double driveFFVolts = 0.0;
   private double driveAppliedVolts = 0.0;
   private double turnAppliedVolts = 0.0;
@@ -70,8 +71,9 @@ public class ModuleIOSimWPI implements ModuleIO {
     }
 
     // Update simulation state
-    driveSim.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.0, 12.0));
-    turnSim.setInputVoltage(MathUtil.clamp(turnAppliedVolts, -12.0, 12.0));
+    double busVoltage = RoboRioSim.getVInVoltage();
+    driveSim.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -busVoltage, busVoltage));
+    turnSim.setInputVoltage(MathUtil.clamp(turnAppliedVolts, -busVoltage, busVoltage));
     driveSim.update(0.02);
     turnSim.update(0.02);
 
@@ -111,7 +113,7 @@ public class ModuleIOSimWPI implements ModuleIO {
   @Override
   public void setDriveVelocity(double velocityRadPerSec) {
     driveClosedLoop = true;
-    driveFFVolts = driveSimKs * Math.signum(velocityRadPerSec) + driveSimKv * velocityRadPerSec;
+    driveFFVolts = driveKs * Math.signum(velocityRadPerSec) + driveKv * velocityRadPerSec;
     driveController.setSetpoint(velocityRadPerSec);
   }
 

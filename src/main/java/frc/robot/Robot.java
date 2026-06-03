@@ -31,7 +31,7 @@ import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOSimWPI;
+import frc.robot.subsystems.drive.ModuleIOSimSpark;
 import frc.robot.subsystems.drive.ModuleIOSpark;
 import frc.robot.subsystems.drive.SparkOdometryThread;
 import frc.robot.util.KernelLogMonitor;
@@ -124,10 +124,10 @@ public class Robot extends LoggedRobot {
         drive =
             new Drive(
                 new GyroIO() {},
-                new ModuleIOSimWPI(),
-                new ModuleIOSimWPI(),
-                new ModuleIOSimWPI(),
-                new ModuleIOSimWPI());
+                new ModuleIOSimSpark(0),
+                new ModuleIOSimSpark(1),
+                new ModuleIOSimSpark(2),
+                new ModuleIOSimSpark(3));
         break;
 
       case REPLAY: // Replaying a log

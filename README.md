@@ -1,7 +1,7 @@
-# Rebuilt — FRC 2363 2026 Robot Code
-[![CI](https://github.com/TripleHelixProgramming/Rebuilt/actions/workflows/build.yml/badge.svg)](https://github.com/TripleHelixProgramming/Rebuilt/actions/workflows/build.yml)
+# REV MAXSwerve robot — FRC 2363
+[![CI](https://github.com/TripleHelixProgramming/offseason-2026/actions/workflows/build.yml/badge.svg)](https://github.com/TripleHelixProgramming/offseason-2026/actions/workflows/build.yml)
 
-Java robot code for the 2026 FRC season, built on [WPILib](https://docs.wpilib.org) and [AdvantageKit](https://github.com/Mechanical-Advantage/AdvantageKit).
+Java robot code for a REV MAXSwerve robot, built on [WPILib](https://docs.wpilib.org) and [AdvantageKit](https://github.com/Mechanical-Advantage/AdvantageKit).
 
 ---
 
