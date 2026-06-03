@@ -42,9 +42,6 @@ public final class Constants {
   public static final class FeatureFlags {
     /** Enable to print loop timing when total exceeds 20ms. */
     public static final boolean PROFILING_ENABLED = false;
-
-    /** Set to false to disable the hopper subsystem entirely. */
-    public static final boolean kHopperEnabled = false;
   }
 
   public final class RobotConstants {

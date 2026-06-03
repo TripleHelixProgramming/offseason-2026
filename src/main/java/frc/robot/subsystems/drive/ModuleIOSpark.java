@@ -52,7 +52,7 @@ public class ModuleIOSpark implements ModuleIO {
   public static final double turnPIDMinInput = 0; // Radians
   public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
 
-  private Rotation2d zeroRotation;
+  private Rotation2d zeroRotation = Rotation2d.kZero;
 
   // Hardware objects
   private final SparkBase driveSpark;
@@ -76,14 +76,6 @@ public class ModuleIOSpark implements ModuleIO {
       new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
   public ModuleIOSpark(int module) {
-    zeroRotation =
-        switch (module) {
-          case 0 -> frontLeftZeroRotation;
-          case 1 -> frontRightZeroRotation;
-          case 2 -> backLeftZeroRotation;
-          case 3 -> backRightZeroRotation;
-          default -> Rotation2d.kZero;
-        };
     driveSpark =
         new SparkFlex(
             switch (module) {

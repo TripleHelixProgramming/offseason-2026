@@ -464,12 +464,11 @@ public class Robot extends LoggedRobot {
     logAlerts();
   }
 
-  // Third-party library alerts (PathPlanner, Choreo, PhotonVision) still publish to SmartDashboard
+  // Third-party library alerts (PathPlanner, Choreo) still publish to SmartDashboard
   // via their own Alert objects, so we read them back from NT.
   private static void logAlerts() {
     logAlertGroup("PathPlanner");
     logAlertGroup("Choreo");
-    logAlertGroup("PhotonAlerts");
   }
 
   private static void logAlertGroup(String group) {
