@@ -45,11 +45,11 @@ public class Module {
             "Disconnected turn motor on module " + Integer.toString(index) + ".", AlertType.kError);
 
     // Set turn zero from preferences
-    Rotation2d turnZeroFromCancoder = inputs.turnZero;
-    Preferences.initDouble(zeroRotationKey + index, turnZeroFromCancoder.getRadians());
+    Rotation2d turnZeroFromEncoder = inputs.turnZero;
+    Preferences.initDouble(zeroRotationKey + index, turnZeroFromEncoder.getRadians());
     Rotation2d turnZeroFromPreferences =
         new Rotation2d(
-            Preferences.getDouble(zeroRotationKey + index, turnZeroFromCancoder.getRadians()));
+            Preferences.getDouble(zeroRotationKey + index, turnZeroFromEncoder.getRadians()));
     io.setTurnZero(turnZeroFromPreferences);
     Logger.recordOutput(
         "Drive/Module" + index + "/TurnZeroRad", turnZeroFromPreferences.getRadians());
@@ -171,7 +171,7 @@ public class Module {
 
   /** Sets the zero position of the turn axis to the current rotation */
   public void setTurnZero() {
-    Rotation2d newTurnZero = inputs.turnZero.minus(inputs.turnPosition);
+    Rotation2d newTurnZero = inputs.turnZero.plus(inputs.turnPosition);
     io.setTurnZero(newTurnZero);
     Preferences.setDouble(zeroRotationKey + index, newTurnZero.getRadians());
     Logger.recordOutput("Drive/Module" + index + "/TurnZeroRad", newTurnZero.getRadians());

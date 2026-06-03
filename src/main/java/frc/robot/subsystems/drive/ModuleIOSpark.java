@@ -52,7 +52,7 @@ public class ModuleIOSpark implements ModuleIO {
   public static final double turnPIDMinInput = 0; // Radians
   public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
 
-  private final Rotation2d zeroRotation;
+  private Rotation2d zeroRotation;
 
   // Hardware objects
   private final SparkBase driveSpark;
@@ -200,6 +200,7 @@ public class ModuleIOSpark implements ModuleIO {
 
     // Update turn inputs
     sparkStickyFault = false;
+    inputs.turnZero = zeroRotation;
     ifOk(
         turnSpark,
         turnEncoder::getPosition,
@@ -245,6 +246,11 @@ public class ModuleIOSpark implements ModuleIO {
         ClosedLoopSlot.kSlot0,
         ffVolts,
         ArbFFUnits.kVoltage);
+  }
+
+  @Override
+  public void setTurnZero(Rotation2d rotation) {
+    zeroRotation = rotation;
   }
 
   @Override
