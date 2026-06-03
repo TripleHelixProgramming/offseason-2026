@@ -63,7 +63,7 @@ public class Robot extends LoggedRobot {
   }
 
   public final LoggedPowerDistribution powerDistribution =
-      new LoggedPowerDistribution(1, ModuleType.kRev, "PDH");
+      new LoggedPowerDistribution(1, ModuleType.kCTRE, "PDH");
 
   private final java.util.Set<String> activeCommands = new java.util.LinkedHashSet<>();
 

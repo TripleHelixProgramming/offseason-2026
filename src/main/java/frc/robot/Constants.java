@@ -83,15 +83,15 @@ public final class Constants {
 
       public static final int gyro = 0;
 
-      public static final int backLeftDrive = 10;
-      public static final int backRightDrive = 18;
-      public static final int frontRightDrive = 20;
-      public static final int frontLeftDrive = 28;
+      public static final int backLeftDrive = 11;
+      public static final int backRightDrive = 24;
+      public static final int frontRightDrive = 21;
+      public static final int frontLeftDrive = 14;
 
-      public static final int backLeftTurn = 11;
-      public static final int backRightTurn = 19;
-      public static final int frontRightTurn = 21;
-      public static final int frontLeftTurn = 29;
+      public static final int backLeftTurn = 23;
+      public static final int backRightTurn = 25;
+      public static final int frontRightTurn = 16;
+      public static final int frontLeftTurn = 22;
     }
   }
 }
