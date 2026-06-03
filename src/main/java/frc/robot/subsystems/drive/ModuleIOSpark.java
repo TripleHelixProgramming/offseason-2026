@@ -26,9 +26,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.Constants.CANBusPorts.CAN2;
 import frc.robot.Constants.MotorConstants.NEO550Constants;
 import frc.robot.Constants.MotorConstants.NEOConstants;
+import frc.robot.subsystems.drive.DriveConstants.ModuleConstants;
 import java.util.Queue;
 import java.util.function.DoubleSupplier;
 
@@ -61,27 +61,9 @@ public class ModuleIOSpark implements ModuleIO {
   private final Debouncer turnConnectedDebounce =
       new Debouncer(0.5, Debouncer.DebounceType.kFalling);
 
-  public ModuleIOSpark(int module) {
-    driveSpark =
-        new SparkMax(
-            switch (module) {
-              case 0 -> CAN2.frontLeftDrive;
-              case 1 -> CAN2.frontRightDrive;
-              case 2 -> CAN2.backLeftDrive;
-              case 3 -> CAN2.backRightDrive;
-              default -> 0;
-            },
-            MotorType.kBrushless);
-    turnSpark =
-        new SparkMax(
-            switch (module) {
-              case 0 -> CAN2.frontLeftTurn;
-              case 1 -> CAN2.frontRightTurn;
-              case 2 -> CAN2.backLeftTurn;
-              case 3 -> CAN2.backRightTurn;
-              default -> 0;
-            },
-            MotorType.kBrushless);
+  public ModuleIOSpark(ModuleConstants constants) {
+    driveSpark = new SparkMax(constants.driveCanId(), MotorType.kBrushless);
+    turnSpark = new SparkMax(constants.turnCanId(), MotorType.kBrushless);
     driveEncoder = driveSpark.getEncoder();
     turnEncoder = turnSpark.getAbsoluteEncoder();
     driveController = driveSpark.getClosedLoopController();

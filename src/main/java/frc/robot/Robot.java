@@ -28,6 +28,7 @@ import frc.robot.Constants.CANBusPorts.CAN2;
 import frc.robot.Constants.FeatureFlags;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
@@ -106,10 +107,10 @@ public class Robot extends LoggedRobot {
         drive =
             new Drive(
                 new GyroIOPigeon2(),
-                new ModuleIOSpark(0),
-                new ModuleIOSpark(1),
-                new ModuleIOSpark(2),
-                new ModuleIOSpark(3));
+                new ModuleIOSpark(DriveConstants.frontLeft),
+                new ModuleIOSpark(DriveConstants.frontRight),
+                new ModuleIOSpark(DriveConstants.backLeft),
+                new ModuleIOSpark(DriveConstants.backRight));
 
         // Start kernel log monitoring (singleton, starts automatically on first call)
         KernelLogMonitor.getInstance();
@@ -124,10 +125,10 @@ public class Robot extends LoggedRobot {
         drive =
             new Drive(
                 new GyroIO() {},
-                new ModuleIOSimSpark(0),
-                new ModuleIOSimSpark(1),
-                new ModuleIOSimSpark(2),
-                new ModuleIOSimSpark(3));
+                new ModuleIOSimSpark(DriveConstants.frontLeft),
+                new ModuleIOSimSpark(DriveConstants.frontRight),
+                new ModuleIOSimSpark(DriveConstants.backLeft),
+                new ModuleIOSimSpark(DriveConstants.backRight));
         break;
 
       case REPLAY: // Replaying a log

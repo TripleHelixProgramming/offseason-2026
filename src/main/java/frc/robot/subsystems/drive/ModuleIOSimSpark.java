@@ -20,10 +20,10 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
-import frc.robot.Constants.CANBusPorts.CAN2;
 import frc.robot.Constants.MotorConstants.NEO550Constants;
 import frc.robot.Constants.MotorConstants.NEOConstants;
 import frc.robot.Robot;
+import frc.robot.subsystems.drive.DriveConstants.ModuleConstants;
 
 /** Module IO implementation using REV Spark sim layer for hardware-in-the-loop style simulation. */
 public class ModuleIOSimSpark implements ModuleIO {
@@ -48,27 +48,9 @@ public class ModuleIOSimSpark implements ModuleIO {
   private final DCMotorSim driveDCMotorSim;
   private final DCMotorSim turnDCMotorSim;
 
-  public ModuleIOSimSpark(int module) {
-    driveSpark =
-        new SparkMax(
-            switch (module) {
-              case 0 -> CAN2.frontLeftDrive;
-              case 1 -> CAN2.frontRightDrive;
-              case 2 -> CAN2.backLeftDrive;
-              case 3 -> CAN2.backRightDrive;
-              default -> 0;
-            },
-            MotorType.kBrushless);
-    turnSpark =
-        new SparkMax(
-            switch (module) {
-              case 0 -> CAN2.frontLeftTurn;
-              case 1 -> CAN2.frontRightTurn;
-              case 2 -> CAN2.backLeftTurn;
-              case 3 -> CAN2.backRightTurn;
-              default -> 0;
-            },
-            MotorType.kBrushless);
+  public ModuleIOSimSpark(ModuleConstants constants) {
+    driveSpark = new SparkMax(constants.driveCanId(), MotorType.kBrushless);
+    turnSpark = new SparkMax(constants.turnCanId(), MotorType.kBrushless);
     driveController = driveSpark.getClosedLoopController();
     turnController = turnSpark.getClosedLoopController();
 

@@ -27,9 +27,22 @@ import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.MomentOfInertia;
+import frc.robot.Constants.CANBusPorts.CAN2;
 import frc.robot.Constants.MotorConstants.NEOConstants;
 
 public class DriveConstants {
+
+  /** Per-module configuration used to instantiate drive and turn Spark MAX controllers. */
+  public record ModuleConstants(String name, int driveCanId, int turnCanId) {}
+
+  public static final ModuleConstants frontLeft =
+      new ModuleConstants("FrontLeft", CAN2.frontLeftDrive, CAN2.frontLeftTurn);
+  public static final ModuleConstants frontRight =
+      new ModuleConstants("FrontRight", CAN2.frontRightDrive, CAN2.frontRightTurn);
+  public static final ModuleConstants backLeft =
+      new ModuleConstants("BackLeft", CAN2.backLeftDrive, CAN2.backLeftTurn);
+  public static final ModuleConstants backRight =
+      new ModuleConstants("BackRight", CAN2.backRightDrive, CAN2.backRightTurn);
 
   public static final String zeroRotationKey = "ZeroRotation";
 
