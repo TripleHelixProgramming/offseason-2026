@@ -81,6 +81,7 @@ public final class Constants {
     public static final class CAN2 {
       public static final CANBus bus = CANBus.roboRIO();
 
+      public static final int pd = 0;
       public static final int gyro = 0;
 
       public static final int backLeftDrive = 11;

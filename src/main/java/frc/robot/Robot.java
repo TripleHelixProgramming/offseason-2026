@@ -24,6 +24,7 @@ import frc.lib.ControllerSelector.DriverConfig;
 import frc.lib.ControllerSelector.DriverController;
 import frc.lib.ControllerSelector.OperatorConfig;
 import frc.lib.LoggedPowerDistribution;
+import frc.robot.Constants.CANBusPorts.CAN2;
 import frc.robot.Constants.FeatureFlags;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.drive.Drive;
@@ -63,7 +64,7 @@ public class Robot extends LoggedRobot {
   }
 
   public final LoggedPowerDistribution powerDistribution =
-      new LoggedPowerDistribution(1, ModuleType.kCTRE, "PDH");
+      new LoggedPowerDistribution(CAN2.pd, ModuleType.kCTRE, "PD");
 
   private final java.util.Set<String> activeCommands = new java.util.LinkedHashSet<>();
 
