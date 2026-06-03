@@ -139,17 +139,9 @@ public class DriveConstants {
               drivetrainSpeedLimit.in(MetersPerSecond),
               wheelCOF,
               driveGearbox.withReduction(driveMotorReduction),
-              NEOConstants.kDefaultSupplyCurrentLimit,
+              NEOConstants.kDefaultStatorCurrentLimit,
               1),
           moduleTranslations);
-
-  // TorqueCurrent peak at which the wheels start to slip; used for slip detection in
-  // TorqueCurrentFOC control mode. This needs to be tuned to your individual robot.
-  static final int kSlipCurrent = 120;
-
-  // Stator current limit for azimuth (steer) motors; lower than drive to reduce brownout risk
-  // since steering requires minimal torque compared to driving.
-  static final int kSteerStatorCurrentLimit = 60;
 
   static final double ODOMETRY_FREQUENCY = 100.0; // Hz
 }

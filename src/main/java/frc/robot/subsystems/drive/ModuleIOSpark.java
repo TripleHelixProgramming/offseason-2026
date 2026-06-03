@@ -73,7 +73,7 @@ public class ModuleIOSpark implements ModuleIO {
     var driveConfig = new SparkMaxConfig();
     driveConfig
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(NEOConstants.kDefaultSupplyCurrentLimit)
+        .smartCurrentLimit(NEOConstants.kDefaultStatorCurrentLimit)
         .voltageCompensation(12.0);
     driveConfig
         .encoder
@@ -107,7 +107,7 @@ public class ModuleIOSpark implements ModuleIO {
     turnConfig
         .inverted(turnInverted)
         .idleMode(IdleMode.kBrake)
-        .smartCurrentLimit(NEO550Constants.kDefaultSupplyCurrentLimit)
+        .smartCurrentLimit(NEO550Constants.kDefaultStatorCurrentLimit)
         .voltageCompensation(12.0);
     turnConfig
         .absoluteEncoder

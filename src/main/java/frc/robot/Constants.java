@@ -51,13 +51,14 @@ public final class Constants {
   public static final class MotorConstants {
     public static final class NEOConstants {
       public static final AngularVelocity kFreeSpeed = RPM.of(5676);
-      public static final int kDefaultSupplyCurrentLimit = 60;
-      public static final int kDefaultStatorCurrentLimit = 100;
+      public static final int kDefaultSupplyCurrentLimit = 25;
+      public static final int kDefaultStatorCurrentLimit = 50;
     }
 
     public static final class NEO550Constants {
       public static final AngularVelocity kFreeSpeed = RPM.of(11000);
       public static final int kDefaultSupplyCurrentLimit = 10;
+      public static final int kDefaultStatorCurrentLimit = 20;
     }
   }
 
