@@ -115,11 +115,18 @@ public class DriveConstants {
   // Module controller gains
   public static final double driveKp = 10.0;
   public static final double driveKd = 0.0;
-  public static final double driveKs = 0.0;
-  public static final double driveKv = 0.124;
+  public static final double driveKs = 0.0; // V — characterize with SysId
+  // Theoretical kV from motor model (reduction / motor Kv). Refine with SysId.
+  public static final double driveKv =
+      driveMotorReduction / driveGearbox.KvRadPerSecPerVolt; // V·s/rad
+  public static final double driveKa = 0.0; // V·s²/rad — characterize with SysId
 
   public static final double turnKp = 2.0;
   public static final double turnKd = 0.0;
+  // Theoretical kV from motor model (reduction / motor Kv). Refine with SysId.
+  public static final double turnKv =
+      turnMotorReduction / turnGearbox.KvRadPerSecPerVolt; // V·s/rad
+  public static final double turnKa = 0.0; // V·s²/rad — characterize with SysId
 
   public static final double turnPIDMinInput = 0.0; // Radians
   public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
