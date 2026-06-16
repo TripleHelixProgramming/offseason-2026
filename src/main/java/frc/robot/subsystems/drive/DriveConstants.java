@@ -110,10 +110,10 @@ public class DriveConstants {
   public static final double turnEncoderVelocityFactor = (2 * Math.PI) / 60.0; // RPM -> Rad/Sec
 
   // Absolute turn encoder configuration
-  public static final boolean turnEncoderInverted = false;
+  public static final boolean turnEncoderInverted = true;
 
   // Module controller gains
-  public static final double driveKp = 10.0;
+  public static final double driveKp = 0.04;
   public static final double driveKd = 0.0;
   public static final double driveKs = 0.0; // V — characterize with SysId
   // Theoretical kV from motor model (reduction / motor Kv). Refine with SysId.
@@ -121,7 +121,7 @@ public class DriveConstants {
       driveMotorReduction / driveGearbox.KvRadPerSecPerVolt; // V·s/rad
   public static final double driveKa = 0.0; // V·s²/rad — characterize with SysId
 
-  public static final double turnKp = 2.0;
+  public static final double turnKp = 1.0;
   public static final double turnKd = 0.0;
   // Theoretical kV from motor model (reduction / motor Kv). Refine with SysId.
   public static final double turnKv =
