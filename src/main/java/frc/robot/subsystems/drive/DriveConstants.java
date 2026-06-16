@@ -110,7 +110,7 @@ public class DriveConstants {
   public static final double turnEncoderVelocityFactor = (2 * Math.PI) / 60.0; // RPM -> Rad/Sec
 
   // Absolute turn encoder configuration
-  public static final boolean turnEncoderInverted = false;
+  public static final boolean turnEncoderInverted = true;
 
   // Module controller gains
   public static final double driveKp = 10.0;
