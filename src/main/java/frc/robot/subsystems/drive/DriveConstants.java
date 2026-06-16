@@ -113,12 +113,12 @@ public class DriveConstants {
   public static final boolean turnEncoderInverted = true;
 
   // Module controller gains
-  public static final double driveKp = 10.0;
+  public static final double driveKp = 0.04;
   public static final double driveKd = 0.0;
   public static final double driveKs = 0.0;
   public static final double driveKv = 0.124;
 
-  public static final double turnKp = 2.0;
+  public static final double turnKp = 1.0;
   public static final double turnKd = 0.0;
 
   public static final double turnPIDMinInput = 0.0; // Radians
