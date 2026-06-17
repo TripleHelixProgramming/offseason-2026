@@ -198,8 +198,11 @@ public class ModuleIOSpark implements ModuleIO {
   }
 
   @Override
-  public void setDriveVelocity(double velocityRadPerSec) {
-    double ffVolts = driveKs * Math.signum(velocityRadPerSec) + driveKv * velocityRadPerSec;
+  public void setDriveVelocity(double velocityRadPerSec, double accelRadPerSec2) {
+    double ffVolts =
+        driveKs * Math.signum(velocityRadPerSec)
+            + driveKv * velocityRadPerSec
+            + driveKa * accelRadPerSec2;
     driveController.setSetpoint(
         velocityRadPerSec,
         ControlType.kVelocity,
@@ -214,10 +217,12 @@ public class ModuleIOSpark implements ModuleIO {
   }
 
   @Override
-  public void setTurnPosition(Rotation2d rotation) {
+  public void setTurnPosition(Rotation2d rotation, double velocityRadPerSec) {
     double setpoint =
         MathUtil.inputModulus(
             rotation.plus(zeroRotation).getRadians(), turnPIDMinInput, turnPIDMaxInput);
-    turnController.setSetpoint(setpoint, ControlType.kPosition);
+    double ffVolts = turnKv * velocityRadPerSec;
+    turnController.setSetpoint(
+        setpoint, ControlType.kPosition, ClosedLoopSlot.kSlot0, ffVolts, ArbFFUnits.kVoltage);
   }
 }
