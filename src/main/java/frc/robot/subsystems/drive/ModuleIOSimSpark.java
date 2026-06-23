@@ -56,6 +56,7 @@ public class ModuleIOSimSpark implements ModuleIO {
 
     var driveConfig = new SparkMaxConfig();
     driveConfig
+        .inverted(true)
         .idleMode(IdleMode.kBrake)
         .smartCurrentLimit(NEOConstants.kDefaultStatorCurrentLimit)
         .voltageCompensation(12.0);
