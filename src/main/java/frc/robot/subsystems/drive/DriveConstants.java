@@ -48,8 +48,8 @@ public class DriveConstants {
 
   // Robot physical dimensions
   // TODO: Update wheelbase and track width
-  public static final Distance wheelBase = Inches.of(22.5);
-  public static final Distance trackWidth = Inches.of(19.5);
+  public static final Distance wheelBase = Inches.of(14.5);
+  public static final Distance trackWidth = Inches.of(14.5);
   public static final Translation2d[] moduleTranslations =
       new Translation2d[] {
         new Translation2d(wheelBase.div(2.0), trackWidth.div(2.0)),
@@ -126,8 +126,8 @@ public class DriveConstants {
 
   // PathPlanner configuration
   // TODO: Update mass and MOI
-  public static final Mass robotMass = Pounds.of(150);
-  public static final MomentOfInertia robotMOI = KilogramSquareMeters.of(6);
+  public static final Mass robotMass = Pounds.of(42.55);
+  public static final MomentOfInertia robotMOI = KilogramSquareMeters.of(1.5);
   public static final double wheelCOF = 1.2;
   public static final RobotConfig ppConfig =
       new RobotConfig(
