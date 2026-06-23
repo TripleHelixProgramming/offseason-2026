@@ -25,9 +25,11 @@ public class ModuleIOSimWPI implements ModuleIO {
   private static final double DRIVE_KD = 0;
   private static final double DRIVE_KS = 0;
   private static final double DRIVE_KV = 1.0 / Units.rotationsToRadians(1.0 / 0.91035);
+  private static final double DRIVE_KA = driveKa;
 
   private static final double TURN_KP = 8.0;
   private static final double TURN_KD = 0.0;
+  private static final double TURN_KV = turnKv;
 
   private final DCMotorSim driveSim;
   private final DCMotorSim turnSim;
@@ -37,6 +39,7 @@ public class ModuleIOSimWPI implements ModuleIO {
   private PIDController driveController = new PIDController(DRIVE_KP, 0, DRIVE_KD);
   private PIDController turnController = new PIDController(TURN_KP, 0, TURN_KD);
   private double driveFFVolts = 0.0;
+  private double turnFFVolts = 0.0;
   private double driveAppliedVolts = 0.0;
   private double turnAppliedVolts = 0.0;
 
@@ -65,7 +68,7 @@ public class ModuleIOSimWPI implements ModuleIO {
       driveController.reset();
     }
     if (turnClosedLoop) {
-      turnAppliedVolts = turnController.calculate(turnSim.getAngularPositionRad());
+      turnAppliedVolts = turnFFVolts + turnController.calculate(turnSim.getAngularPositionRad());
     } else {
       turnController.reset();
     }
@@ -111,15 +114,19 @@ public class ModuleIOSimWPI implements ModuleIO {
   }
 
   @Override
-  public void setDriveVelocity(double velocityRadPerSec) {
+  public void setDriveVelocity(double velocityRadPerSec, double accelRadPerSec2) {
     driveClosedLoop = true;
-    driveFFVolts = DRIVE_KS * Math.signum(velocityRadPerSec) + DRIVE_KV * velocityRadPerSec;
+    driveFFVolts =
+        DRIVE_KS * Math.signum(velocityRadPerSec)
+            + DRIVE_KV * velocityRadPerSec
+            + DRIVE_KA * accelRadPerSec2;
     driveController.setSetpoint(velocityRadPerSec);
   }
 
   @Override
-  public void setTurnPosition(Rotation2d rotation) {
+  public void setTurnPosition(Rotation2d rotation, double velocityRadPerSec) {
     turnClosedLoop = true;
+    turnFFVolts = TURN_KV * velocityRadPerSec;
     turnController.setSetpoint(rotation.getRadians());
   }
 }

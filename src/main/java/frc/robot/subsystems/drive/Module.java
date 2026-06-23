@@ -33,6 +33,11 @@ public class Module {
   private final Alert turnDisconnectedAlert;
   private SwerveModulePosition[] odometryPositions = new SwerveModulePosition[] {};
 
+  // Previous setpoints for derivative-based feedforward computation
+  private double prevDriveVelocitySetpointRadPerSec = 0.0;
+  private Rotation2d prevTurnSetpoint = Rotation2d.kZero;
+  private boolean firstSetpoint = true;
+
   public Module(ModuleIO io, String name) {
     this.io = io;
     this.name = name;
@@ -99,15 +104,30 @@ public class Module {
     state.optimize(getAngle());
     state.cosineScale(inputs.turnPosition);
 
-    // Apply setpoints
-    io.setDriveVelocity(state.speedMetersPerSecond / wheelRadiusMeters);
-    io.setTurnPosition(state.angle);
+    double velocityRadPerSec = state.speedMetersPerSecond / wheelRadiusMeters;
+
+    // Differentiate consecutive setpoints to produce feedforward hints.
+    // firstSetpoint guard prevents a voltage spike before prevs are seeded.
+    double driveAccelRadPerSec2 =
+        firstSetpoint ? 0.0 : (velocityRadPerSec - prevDriveVelocitySetpointRadPerSec) / 0.02;
+    double turnVelocityRadPerSec =
+        firstSetpoint ? 0.0 : state.angle.minus(prevTurnSetpoint).getRadians() / 0.02;
+
+    prevDriveVelocitySetpointRadPerSec = velocityRadPerSec;
+    prevTurnSetpoint = state.angle;
+    firstSetpoint = false;
+
+    io.setDriveVelocity(velocityRadPerSec, driveAccelRadPerSec2);
+    io.setTurnPosition(state.angle, turnVelocityRadPerSec);
   }
 
   /** Runs the module with the specified output while controlling to zero degrees. */
   public void runCharacterization(double output) {
     io.setDriveOpenLoop(output);
-    io.setTurnPosition(Rotation2d.kZero);
+    io.setTurnPosition(Rotation2d.kZero, 0.0);
+    // Reset so the next runSetpoint doesn't see a stale previous setpoint
+    prevTurnSetpoint = Rotation2d.kZero;
+    firstSetpoint = true;
   }
 
   /** Disables all outputs to motors. */

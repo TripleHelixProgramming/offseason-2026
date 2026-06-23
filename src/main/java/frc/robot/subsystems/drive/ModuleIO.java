@@ -48,11 +48,11 @@ public interface ModuleIO {
   /** Run the turn motor at the specified open loop value. */
   public default void setTurnOpenLoop(double output) {}
 
-  /** Run the drive motor at the specified velocity. */
-  public default void setDriveVelocity(double velocityRadPerSec) {}
+  /** Run the drive motor at the specified velocity with a feedforward acceleration hint. */
+  public default void setDriveVelocity(double velocityRadPerSec, double accelRadPerSec2) {}
 
-  /** Run the turn motor to the specified rotation. */
-  public default void setTurnPosition(Rotation2d rotation) {}
+  /** Run the turn motor to the specified rotation with a feedforward velocity hint. */
+  public default void setTurnPosition(Rotation2d rotation, double velocityRadPerSec) {}
 
   /** Update the turn zero position of the turn absolute encoder */
   public default void setTurnZero(Rotation2d rotation) {}
