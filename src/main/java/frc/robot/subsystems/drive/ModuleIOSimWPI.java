@@ -12,7 +12,6 @@ import static frc.robot.subsystems.drive.DriveConstants.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
@@ -45,14 +44,8 @@ public class ModuleIOSimWPI implements ModuleIO {
 
   public ModuleIOSimWPI() {
     // Create drive and turn sim models
-    driveSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(driveGearbox, 0.025, driveMotorReduction),
-            driveGearbox);
-    turnSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(turnGearbox, 0.004, turnMotorReduction),
-            turnGearbox);
+    driveSim = DriveConstants.createDriveSim();
+    turnSim = DriveConstants.createTurnSim();
 
     // Enable wrapping for turn PID
     turnController.enableContinuousInput(-Math.PI, Math.PI);
