@@ -107,3 +107,17 @@ When running in simulation, a keyboard (`Keyboard 0`) can be used as a driver co
 2. Run `./gradlew build` locally to verify your changes compile and pass formatting.
 3. Open a pull request targeting `main`. CI will run a build check and Spotless formatting check automatically.
 4. Keep PRs focused — one feature or fix per PR.
+
+---
+
+## Credits and Licensing
+
+This project is licensed under the [BSD 3-Clause License](LICENSE). See individual source files for copyright holders.
+
+### Triple Helix Robotics (FRC Team 2363)
+
+The robot-specific subsystems and supporting utilities are original work by Triple Helix Robotics, copyright 2025-2026.
+
+### AdvantageKit — Littleton Robotics (FRC 6328)
+
+The swerve drive subsystem, I/O architecture, and logging infrastructure are based on the [AdvantageKit Spark Swerve template](https://github.com/Mechanical-Advantage/AdvantageKit/tree/main/template_projects/sources/spark_swerve) by Littleton Robotics (FRC 6328 "Mechanical Advantage"), and have been substantially modified. AdvantageKit is licensed under BSD 3-Clause; see [LICENSE](LICENSE).
