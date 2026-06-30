@@ -12,8 +12,12 @@ import static edu.wpi.first.units.Units.*;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.path.PathConstraints;
+import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
@@ -21,7 +25,9 @@ import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.MomentOfInertia;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.Constants.CANBusPorts.CAN2;
+import frc.robot.Constants.MotorConstants.NEO550Constants;
 import frc.robot.Constants.MotorConstants.NEOConstants;
 
 public class DriveConstants {
@@ -41,7 +47,6 @@ public class DriveConstants {
   public static final String zeroRotationKey = "ZeroRotation";
 
   // Robot physical dimensions
-  // TODO: Update wheelbase and track width
   public static final Distance wheelBase = Inches.of(14.5);
   public static final Distance trackWidth = Inches.of(14.5);
   public static final Translation2d[] moduleTranslations =
@@ -68,12 +73,6 @@ public class DriveConstants {
               * NEOConstants.kFreeSpeed.in(RotationsPerSecond)
               / driveMotorReduction);
 
-  // Drive encoder configuration
-  public static final double driveEncoderPositionFactor =
-      2 * Math.PI / driveMotorReduction; // Rotor Rotations -> Wheel Radians
-  public static final double driveEncoderVelocityFactor =
-      (2 * Math.PI) / 60.0 / driveMotorReduction; // Rotor RPM -> Wheel Rad/Sec
-
   // Chassis movement limits
   private static final LinearVelocity driverSpeedLimit = MetersPerSecond.of(5);
   public static final LinearVelocity maxChassisVelocity =
@@ -94,29 +93,17 @@ public class DriveConstants {
           maxChassisAngularAcceleration.in(RadiansPerSecondPerSecond));
 
   // Turn motor configuration
-  public static final boolean turnInverted = false;
   // TODO: Update turn motor reduction
   public static final double turnMotorReduction = 9424.0 / 203.0;
   public static final DCMotor turnGearbox = DCMotor.getNeo550(1);
 
-  // Turn encoder configuration
-  public static final double turnEncoderPositionFactor = 2 * Math.PI; // Rotations -> Radians
-  public static final double turnEncoderVelocityFactor = (2 * Math.PI) / 60.0; // RPM -> Rad/Sec
-
-  // Absolute turn encoder configuration
-  public static final boolean turnEncoderInverted = true;
-
   // Module controller gains
-  public static final double driveKp = 0.004;
-  public static final double driveKd = 0.0;
   public static final double driveKs = 0.0; // V — characterize with SysId
   // Theoretical kV from motor model (reduction / motor Kv). Refine with SysId.
   public static final double driveKv =
       driveMotorReduction / driveGearbox.KvRadPerSecPerVolt; // V·s/rad
   public static final double driveKa = 0.0; // V·s²/rad — characterize with SysId
 
-  public static final double turnKp = 0.1;
-  public static final double turnKd = 0.0;
   // Theoretical kV from motor model (reduction / motor Kv). Refine with SysId.
   public static final double turnKv =
       turnMotorReduction / turnGearbox.KvRadPerSecPerVolt; // V·s/rad
@@ -126,7 +113,6 @@ public class DriveConstants {
   public static final double turnPIDMaxInput = 2 * Math.PI; // Radians
 
   // PathPlanner configuration
-  // TODO: Update mass and MOI
   public static final Mass robotMass = Pounds.of(42.55);
   public static final MomentOfInertia robotMOI = KilogramSquareMeters.of(1.5);
   public static final double wheelCOF = 1.2;
@@ -144,4 +130,77 @@ public class DriveConstants {
           moduleTranslations);
 
   static final double ODOMETRY_FREQUENCY = 100.0; // Hz
+
+  // Spark MAX motor configurations
+  public static final SparkMaxConfig driveConfig;
+  public static final SparkMaxConfig turnConfig;
+
+  // Sim MOI values (kg*m^2)
+  public static final double driveSimMOI = 0.025;
+  public static final double turnSimMOI = 0.004;
+
+  public static DCMotorSim createDriveSim() {
+    return new DCMotorSim(
+        LinearSystemId.createDCMotorSystem(driveGearbox, driveSimMOI, driveMotorReduction),
+        driveGearbox);
+  }
+
+  public static DCMotorSim createTurnSim() {
+    return new DCMotorSim(
+        LinearSystemId.createDCMotorSystem(turnGearbox, turnSimMOI, turnMotorReduction),
+        turnGearbox);
+  }
+
+  static {
+    driveConfig = new SparkMaxConfig();
+    driveConfig
+        .inverted(true)
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(NEOConstants.kDefaultStatorCurrentLimit)
+        .voltageCompensation(12.0);
+    driveConfig
+        .encoder
+        .positionConversionFactor(2 * Math.PI / driveMotorReduction)
+        .velocityConversionFactor((2 * Math.PI) / 60.0 / driveMotorReduction)
+        .uvwMeasurementPeriod(10)
+        .uvwAverageDepth(2);
+    driveConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.004, 0.0, 0.0);
+    driveConfig
+        .signals
+        .primaryEncoderPositionAlwaysOn(true)
+        .primaryEncoderPositionPeriodMs((int) (1000.0 / ODOMETRY_FREQUENCY))
+        .primaryEncoderVelocityAlwaysOn(true)
+        .primaryEncoderVelocityPeriodMs(20)
+        .appliedOutputPeriodMs(20)
+        .busVoltagePeriodMs(20)
+        .outputCurrentPeriodMs(20);
+
+    turnConfig = new SparkMaxConfig();
+    turnConfig
+        .inverted(false)
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(NEO550Constants.kDefaultStatorCurrentLimit)
+        .voltageCompensation(12.0);
+    turnConfig
+        .absoluteEncoder
+        .inverted(true)
+        .positionConversionFactor(2 * Math.PI)
+        .velocityConversionFactor((2 * Math.PI) / 60.0)
+        .averageDepth(2);
+    turnConfig
+        .closedLoop
+        .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+        .positionWrappingEnabled(true)
+        .positionWrappingInputRange(turnPIDMinInput, turnPIDMaxInput)
+        .pid(0.1, 0.0, 0.0);
+    turnConfig
+        .signals
+        .absoluteEncoderPositionAlwaysOn(true)
+        .absoluteEncoderPositionPeriodMs((int) (1000.0 / ODOMETRY_FREQUENCY))
+        .absoluteEncoderVelocityAlwaysOn(true)
+        .absoluteEncoderVelocityPeriodMs(20)
+        .appliedOutputPeriodMs(20)
+        .busVoltagePeriodMs(20)
+        .outputCurrentPeriodMs(20);
+  }
 }

@@ -15,11 +15,11 @@ import static frc.robot.subsystems.drive.DriveConstants.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.RoboRioSim;
+import frc.robot.Robot;
 
 /** Physics sim implementation of module IO. */
 public class ModuleIOSimWPI implements ModuleIO {
@@ -28,11 +28,9 @@ public class ModuleIOSimWPI implements ModuleIO {
   private static final double DRIVE_KD = 0;
   private static final double DRIVE_KS = 0;
   private static final double DRIVE_KV = 1.0 / Units.rotationsToRadians(1.0 / 0.91035);
-  private static final double DRIVE_KA = driveKa;
 
   private static final double TURN_KP = 8.0;
   private static final double TURN_KD = 0.0;
-  private static final double TURN_KV = turnKv;
 
   private final DCMotorSim driveSim;
   private final DCMotorSim turnSim;
@@ -48,14 +46,8 @@ public class ModuleIOSimWPI implements ModuleIO {
 
   public ModuleIOSimWPI() {
     // Create drive and turn sim models
-    driveSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(driveGearbox, 0.025, driveMotorReduction),
-            driveGearbox);
-    turnSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(turnGearbox, 0.004, turnMotorReduction),
-            turnGearbox);
+    driveSim = DriveConstants.createDriveSim();
+    turnSim = DriveConstants.createTurnSim();
 
     // Enable wrapping for turn PID
     turnController.enableContinuousInput(-Math.PI, Math.PI);
@@ -80,8 +72,8 @@ public class ModuleIOSimWPI implements ModuleIO {
     double busVoltage = RoboRioSim.getVInVoltage();
     driveSim.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -busVoltage, busVoltage));
     turnSim.setInputVoltage(MathUtil.clamp(turnAppliedVolts, -busVoltage, busVoltage));
-    driveSim.update(0.02);
-    turnSim.update(0.02);
+    driveSim.update(Robot.defaultPeriodSecs);
+    turnSim.update(Robot.defaultPeriodSecs);
 
     // Update drive inputs
     inputs.driveConnected = true;
@@ -122,14 +114,14 @@ public class ModuleIOSimWPI implements ModuleIO {
     driveFFVolts =
         DRIVE_KS * Math.signum(velocityRadPerSec)
             + DRIVE_KV * velocityRadPerSec
-            + DRIVE_KA * accelRadPerSec2;
+            + driveKa * accelRadPerSec2;
     driveController.setSetpoint(velocityRadPerSec);
   }
 
   @Override
   public void setTurnPosition(Rotation2d rotation, double velocityRadPerSec) {
     turnClosedLoop = true;
-    turnFFVolts = TURN_KV * velocityRadPerSec;
+    turnFFVolts = turnKv * velocityRadPerSec;
     turnController.setSetpoint(rotation.getRadians());
   }
 }
