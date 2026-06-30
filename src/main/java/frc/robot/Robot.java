@@ -359,15 +359,15 @@ public class Robot extends LoggedRobot {
     var controller =
         new DriverController() {
           public double getXTranslationInput() {
-            return -xboxDriver.getLeftY();
+            return -xboxDriver.getLeftY() * 0.65;
           }
 
           public double getYTranslationInput() {
-            return -xboxDriver.getLeftX();
+            return -xboxDriver.getLeftX() * 0.65;
           }
 
           public double getRotationInput() {
-            return -xboxDriver.getRightX();
+            return -xboxDriver.getRightX() * 0.65;
           }
 
           public boolean getFieldRelativeInput() {
